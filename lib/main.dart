@@ -27,7 +27,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -37,9 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // TextField Controllers
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController namaController = TextEditingController();
+  TextEditingController matapelajaranController = TextEditingController();
+  TextEditingController nilaiController = TextEditingController();
   TextEditingController feedbackController = TextEditingController();
 
   // Method to Submit Feedback and save it in Google Sheets
@@ -49,68 +48,66 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, proceed.
       FeedbackForm feedbackForm = FeedbackForm(
-          nameController.text,
-          emailController.text,
-          mobileNoController.text,
+          namaController.text,
+          matapelajaranController.text,
+          nilaiController.text,
           feedbackController.text);
 
       FormController formController = FormController();
 
-      _showSnackbar("Submitting Feedback");
+      // _showSnackbar("Submitting Feedback");
 
       // Submit 'feedbackForm' and save it in Google Sheets.
       formController.submitForm(feedbackForm, (String response) {
         print("Response: $response");
         if (response == FormController.STATUS_SUCCESS) {
           // Feedback is saved succesfully in Google Sheets.
-          _showSnackbar("Feedback Submitted");
+          // _showSnackbar("Feedback Submitted");
         } else {
           // Error Occurred while saving data in Google Sheets.
-          _showSnackbar("Error Occurred!");
+          // _showSnackbar("Error Occurred!");
         }
       });
     }
   }
-  
-  // Method to show snackbar with 'message'.
-  _showSnackbar(String message) {
-      final snackBar = SnackBar(content: Text(message));
-      _scaffoldKey.currentState._showSnackbar(snackBar); 
-  }
+
+  // // Method to show snackbar with 'message'.
+  // _showSnackbar(String message) {
+  //     final snackBar = SnackBar(content: Text(message));
+  //     _scaffoldKey.currentState._showSnackbar(snackBar);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,  
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Form(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Form(
                 key: _formKey,
-                child:
-                  Padding(padding: EdgeInsets.all(16),
+                child: Padding(
+                  padding: EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextFormField(
-                        controller: nameController,
+                        controller: namaController,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Enter Valid Name';
+                            return 'nama';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Name'
-                        ),
+                        decoration: InputDecoration(labelText: 'nama'),
                       ),
                       TextFormField(
-                        controller: emailController,
+                        controller: namaController,
                         validator: (value) {
                           if (!value!.contains("@")) {
                             return 'Enter Valid Email';
@@ -118,12 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: 'Email'
-                        ),
+                        decoration: InputDecoration(labelText: 'Email'),
                       ),
                       TextFormField(
-                        controller: mobileNoController,
+                        controller: matapelajaranController,
                         validator: (value) {
                           if (value?.trim().length != 10) {
                             return 'Enter 10 Digit Mobile Number';
@@ -132,38 +127,38 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'Mobile Number',
+                          labelText: 'matapelajaran',
                         ),
                       ),
                       TextFormField(
-                        controller: feedbackController,
+                        controller: nilaiController,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Enter Valid Feedback';
+                            return 'nilai';
                           }
                           return null;
                         },
                         keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          labelText: 'Feedback'
-                        ),
+                        decoration: InputDecoration(labelText: 'Feedback'),
                       ),
                     ],
                   ),
-                ) 
-              ),
-              RaisedButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed:_submitForm,
-                child: Text('Submit Feedback'),
-              ),
-            ],
-          ),
+                )),
+            // RaisedButton(
+            //   color: Colors.blue,
+            //   textColor: Colors.white,
+            //   onPressed: _submitForm,
+            //   child: Text('Submit Feedback'),
+            // ),
+          ],
         ),
+      ),
     );
   }
 }
 
-RaisedButton({required MaterialColor color, required Color textColor, required void Function() onPressed, required Text child}) {
-}
+RaisedButton(
+    {required MaterialColor color,
+    required Color textColor,
+    required void Function() onPressed,
+    required Text child}) {}
